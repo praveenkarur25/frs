@@ -14,6 +14,10 @@ import com.frs.xyz.service.RouteDetails;
 
 @WebServlet("/deleteroute")
 public class DeleteRoute extends HttpServlet {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("Route.jsp");
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String routeid = request.getParameter("routeid");

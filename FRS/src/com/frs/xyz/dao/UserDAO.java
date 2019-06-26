@@ -216,4 +216,25 @@ public class UserDAO {
 		return flag;
 	}
 
+	public static String loginStatus(String userid) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		// Date myDateStr = user.getDateOfBirth();
+		// Date myDate = valueOf(myDateStr);
+		int flag = 0;
+		String sql = "update frs_tbl_user_credentials set loginstatus = 1 where userid ='" + userid + "'";
+		try {
+			connection = DBUtil.getConnection();
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.executeUpdate();
+			flag = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(connection, preparedStatement, resultSet);
+		}
+		return "success";
+	}
 }

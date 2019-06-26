@@ -83,7 +83,7 @@ form{
 	    <a href="http://localhost:9080/FRS/Flights.jsp" class="pt-4 highlight"><i class="fas fa-plane-departure">      FLIGHTS</i></a>
 	    <a href="http://localhost:9080/FRS/Route.jsp" class="pt-4"><i class="fas fa-map-marked-alt">    ROUTE</i></a>
 	    <a href="http://localhost:9080/FRS/Schedule.jsp" class="pt-4"><i class="fas fa-clock">    SCHEDULE</i></a>
-	    <a href="#" class="pt-4"><i class="fas fa-users">  PASSENGER DETAILS</i></a>
+	    <a href="http://localhost:9080/FRS/Passenger_Details.jsp" class="pt-4"><i class="fas fa-users">  PASSENGER DETAILS</i></a>
 	</div>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">

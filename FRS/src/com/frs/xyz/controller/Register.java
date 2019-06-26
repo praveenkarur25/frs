@@ -16,6 +16,9 @@ import com.frs.xyz.service.Admin_User_Service;
 
 @WebServlet("/register")
 public class Register extends HttpServlet {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("UserAcnt.jsp.jsp");
+	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String email = request.getParameter("email");
@@ -64,6 +67,8 @@ public class Register extends HttpServlet {
 			request.setAttribute("userid", userid);
 			flag = 1;
 			if (flag == 1) {
+
+				String loginstatus = UserDAO.loginStatus(userid);
 				RequestDispatcher rd = request.getRequestDispatcher("/UserAcnt.jsp");
 				rd.include(request, response);
 			}

@@ -14,6 +14,9 @@ import com.frs.xyz.service.Flight_Details;
 
 @WebServlet("/delete")
 public class DeleteFlight extends HttpServlet {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("Flights.jsp");
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

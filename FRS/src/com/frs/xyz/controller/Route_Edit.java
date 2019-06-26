@@ -15,6 +15,10 @@ import com.frs.xyz.service.RouteDetails;
 
 @WebServlet("/route")
 public class Route_Edit extends HttpServlet {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("Route.jsp.jsp");
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String source = request.getParameter("source");

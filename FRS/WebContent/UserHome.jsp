@@ -4,9 +4,15 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<%@ page language="java" import="com.frs.xyz.bean.*,java.util.*,com.frs.xyz.dao.*,com.frs.xyz.util.*" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@page import="com.frs.xyz.service.Flight_Details"%>
+<%@page language="java"%>
+<%@page import="java.sql.*"%>
+<%@page session ="true" %>
 <!DOCTYPE html>
 <html>
-<head>
+<head id="Head1" runat="server">
 	<title>User Page</title>
    
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -14,6 +20,24 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css"
+        type="text/css" media="all" />
+    <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"
+        type="text/css" media="all" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"
+        type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            var date = new Date();
+            $("[id*=date-start]").datepicker({
+                autoclose: true,
+                changeMonth: true,
+                changeYear: true,
+                minDate: new Date()
+            });
+        });
+    </script>
 
 </head>
 <style>
@@ -63,11 +87,11 @@ nav{-webkit-transition: padding-top .3s,padding-bottom .3s;
     padding-bottom: 0;
     background-color: #212529;
 }
-.text-intro{
-	width:90%;
-	margin:auto;
-	text-align:center;
-	padding-top:610px;
+.text-intro {
+	width: 90%;
+	
+	padding-left:300px;
+	padding-top: 10px;
 }
 html,body{
 background-image: url('https://static.toiimg.com/thumb/65576160/Airplane.jpg?width=748&height=499');
@@ -167,7 +191,9 @@ color:#FFC312;
 <nav class="navbar navbar-expand-md navbar-dark fixed-top" id="banner">
 	<div class="container">
   <!-- Brand -->
-  <a class="navbar-brand" href="#">XYZ FLIGHT SERVICES</a>
+ <a class="navbar-brand" style="color:white;"><i class="fas fa-plane"
+				style="font-size: 25px; color: #ffc312;"></i>XYZ FLIGHT SERVICES <i class="fas fa-plane"
+				style="font-size: 25px; color: #ffc312;"></i></a>
 
   <!-- Toggler/collapsibe Button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -182,13 +208,13 @@ color:#FFC312;
         <a class="nav-link" href="http://localhost:9080/FRS/UserHome.jsp" style="color:#ffc312;"><i class="fas fa-home" style="color:#ffc312;"></i>Home</a>
       </li>
 	   <li class="nav-item">
-        <a class="nav-link" href="http://localhost:9080/FRS/Bookings.jsp"><i class="fas fa-ticket-alt"></i>My Bookings</a>
+        <a class="nav-link" href="http://localhost:9080/FRS/MyBooking.jsp"><i class="fas fa-ticket-alt" ></i>My Bookings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="http://localhost:8080/FlightReservation/Aboutus.jsp"><i class="fas fa-user"></i>My Account</a>
+        <a class="nav-link" href="http://localhost:9080/FRS/MyAccount.jsp"><i class="fas fa-user"></i>My Account</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="http://localhost:9080/FRS/login.jsp" id="logout" onClick="return confirmed()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        <a class="nav-link" href="http://localhost:9080/FRS/Logout.jsp" id="logout" onClick="return confirmed()"><i class="fas fa-sign-out-alt"></i>Logout</a>
       </li>
     
     </ul>
@@ -205,31 +231,67 @@ color:#FFC312;
 	</div>
 </div>
 </section>
+<%  String userid = (String)session.getAttribute("userid");
+out.println(userid);
+HttpSession user = request.getSession();
+user.setAttribute("userid", userid);
+Connection connection = null;
+PreparedStatement preparedStatement = null;
+ResultSet resultSet = null;
+String query = "select distinct flight_from from frs_tbl_flight";
+String sql = "select distinct flight_to from frs_tbl_flight";
+try{
+	connection = DBUtil.getConnection();
+	preparedStatement = connection.prepareStatement(query);
+	resultSet = preparedStatement.executeQuery(query);
+	preparedStatement = connection.prepareStatement(sql);
+	ResultSet rs = preparedStatement.executeQuery(sql);%>
+	
 
 
 	<div class="d-flex justify-content-start h-100">
 		<div class="card text-white">
 			<div class="card-body ">
-			<form action="search" method ="post">
+			<form action="search" method ="post"  id="form1" runat="server">
 				<div class="row">
 						<div class="col">
 							<div class="input-field">
 								<label for="from">From:</label>
-								<input type="text" class="form-control" id="from-place" name="from" placeholder="enter city" required/>
+								
+									<select class="form-control" name="from">
+									<%  while(resultSet.next()){ %>
+										<option value=<%=resultSet.getString("flight_from") %>><%=resultSet.getString("flight_from") %></option>
+											<%}%>
+									</select>
+									
 							</div>
+						
+
 						</div>
 						<div class="col">
 							<div class="input-field">
-								<label for="from">To:</label>
-								<input type="text" class="form-control" id="to-place" name = "to" placeholder="enter city" required>
+								<label for="to">To:</label>
+								
+									<select class="form-control" name="to">
+									<%  while(rs.next()){ %>
+										<option value=<%=rs.getString("flight_to") %>><%=rs.getString("flight_to") %></option>
+										<%}}
+catch(Exception e){
+	e.printStackTrace();
+}
+%>
+									</select>
+									
 							</div>
 						</div>
-						</div><br>
+						
+						</div>
+						<br>
 				<div class="row">
 					<div class="col-sm-7">
 						<div class="input-field">
 							<label for="date-start">Date:</label>
-							<input type="text" class="form-control" id="date-start" name="date" placeholder="mm/dd/yyyy" required >
+							<input type="text" class="form-control" id="date-start"  name="date" placeholder="mm/dd/yyyy" required >
 						</div>
 					</div>
 					
@@ -238,10 +300,10 @@ color:#FFC312;
 					<div class="col-sm-12">
 							
 								<label for="class">Class:</label>
-									<select class="form-control">
-										<option value="economy">Economy</option>
-										<option value="first">First</option>
-										<option value="business">Business</option>
+									<select class="form-control" name="class">
+										<option value="Economy">Economy</option>
+										<option value="First">First</option>
+										<option value="Business">Business</option>
 									</select>
 							
 					</div>
@@ -249,7 +311,7 @@ color:#FFC312;
 				<div class="row">
 					<div class="col">
 						<label for="class">Adult:</label>
-							<select class="form-control">
+							<select class="form-control"  name ="adult">
 								<option value="1">1</option>
 								<option value="2">2</option>
 								<option value="3">3</option>
@@ -258,7 +320,7 @@ color:#FFC312;
 					</div>
 					<div class="col">
 						<label for="class">Children:</label>
-							<select class="form-control">
+							<select class="form-control" name ="children">
 								<option value="1">1</option>
 								<option value="2">2</option>
 								<option value="3">3</option>
@@ -277,11 +339,12 @@ color:#FFC312;
 		</div>
 	</div>
 
+
 </body>
 
-	<script src="js/jquery.min.js"></script>
+	<!--  <script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap-datepicker.min.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/main.js"></script>-->
 
 <script>
 $(document).on("scroll", function(){
@@ -295,7 +358,8 @@ $(document).on("scroll", function(){
 	}
 });
 </script>
-
+ 
+    
 <script>
 function confirmed()
 {

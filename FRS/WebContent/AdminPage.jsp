@@ -153,7 +153,7 @@ font-family: 'Numans', sans-serif;
     <ul class="navbar-nav ml-auto">
       
       <li class="nav-item">
-        <a class="nav-link" href="http://localhost:9080/FRS/Login.jsp" id="logout" onClick="return confirmed()"><i class="fas fa-sign-out-alt">Logout</i></a>
+        <a class="nav-link" href="http://localhost:9080/FRS/Logout.jsp" id="logout" onClick="return confirmed()"><i class="fas fa-sign-out-alt">Logout</i></a>
       </li>
     </ul>
   </div>
@@ -178,7 +178,7 @@ font-family: 'Numans', sans-serif;
       </li>
       <li class="nav-item">
       
-        <a class="nav-link" href="http://localhost:9080/FRS/Login.jsp" id="logout" onClick="return confirmed()"><i class="fas fa-sign-out-alt">Logout</i></a>
+        <a class="nav-link" href="http://localhost:9080/FRS/Logout.jsp" id="logout" onClick="return confirmed()"><i class="fas fa-sign-out-alt">Logout</i></a>
       </li>
     </ul>
   </div>

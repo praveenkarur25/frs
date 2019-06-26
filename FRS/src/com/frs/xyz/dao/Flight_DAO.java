@@ -192,11 +192,12 @@ public class Flight_DAO {
 		return status;
 	}
 
-	public static ArrayList<String> search(String from, String to, String day) {
+	public static ArrayList<String> search(String from, String to, String day, String flightclass) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ArrayList<String> flightid = new ArrayList<>();
+
 		int status = 0;
 		String sql = "select flightid,availabledays from frs_tbl_flight where flight_From ='" + from
 				+ "' AND flight_to ='" + to + "'";

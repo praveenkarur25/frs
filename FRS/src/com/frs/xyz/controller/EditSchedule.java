@@ -15,6 +15,9 @@ import com.frs.xyz.dao.ScheduleDAO;
 @WebServlet(urlPatterns = "/schedule")
 @SuppressWarnings("serial")
 public class EditSchedule extends HttpServlet {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("Schedule.jsp");
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {

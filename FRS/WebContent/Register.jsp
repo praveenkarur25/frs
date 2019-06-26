@@ -43,7 +43,14 @@
 	font-family: 'Numans', sans-serif;
 	font-size: 16px;
 }
-
+.field-icon{
+float:right;
+margin-right:-7px;
+margin-top:5px;
+position:relative;
+z-index:2;
+cursor:pointer;
+}
 p {
 	color: black;
 	font-size: 1em;
@@ -252,7 +259,10 @@ input:focus {
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
 							<input type="password" name="password" class="form-control"  onblur="return validation()"
-								placeholder="password" minlength="8" maxlength="16" required>
+								placeholder="password" minlength="8" maxlength="16" id="password-field" required>
+								<div class="form-control col-sm-1">
+								<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+								</div>
 						</div>
 						<div class="input-group form-group">
 							<div class="input-group-prepend">
@@ -279,6 +289,18 @@ input:focus {
 		</div>
 	</div>
 </body>
+<script>
+$(".toggle-password").click(function(){
+	
+	$(this).toggleClass("fa-eye fa-eye-slash");
+	var input = $($(this).attr("toggle"));
+	if(input.attr("type")=="password"){
+		input.attr("type","text");
+	}else{
+		input.attr("type","password");
+	}
+});
+</script>
 <script>
 	$(document).on("scroll", function() {
 		if ($(document).scrollTop() > 86) {

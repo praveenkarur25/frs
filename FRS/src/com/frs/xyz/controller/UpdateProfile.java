@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.frs.xyz.bean.XYZ_User_Bean;
 import com.frs.xyz.dao.UserDAO;
@@ -15,8 +16,7 @@ import com.frs.xyz.dao.UserDAO;
 @WebServlet("/update")
 public class UpdateProfile extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		RequestDispatcher rd = request.getRequestDispatcher("UserHome.jsp");
-		rd.forward(request, response);
+		response.sendRedirect("UserHome.jsp");
 
 	}
 
@@ -46,6 +46,8 @@ public class UpdateProfile extends HttpServlet {
 		int flag = 0;
 		flag = UserDAO.updateProfile(user);
 		if (flag == 1) {
+			HttpSession session = request.getSession();
+			session.setAttribute("userid", userid);
 			RequestDispatcher rd = request.getRequestDispatcher("UserHome.jsp");
 			rd.forward(request, response);
 		}

@@ -7,7 +7,7 @@
 <%@page import="com.frs.xyz.util.DBUtil"%>
 <%@page language="java"%>
 <%@page import="java.sql.*"%>
-<%@page session ="false" %>
+<%@ page session="true" %>
 
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -74,10 +74,11 @@ nav{-webkit-transition: padding-top .3s,padding-bottom .3s;
     padding-bottom: 0;
     background-color: #212529;
 }
-	.text-intro {
+						.text-intro {
 	width: 90%;
-	padding-left:100px;
-	padding-top: 0px;
+	margin: auto;
+	padding-left:400px;
+	padding-top: 610px;
 }
 html,body{
 background-image: url('https://static.toiimg.com/thumb/65576160/Airplane.jpg?width=748&height=499');
@@ -174,10 +175,12 @@ color:#FFC312;
 }
 </style>
 <body onkeydown = "return(event.keyCode != 116)">
+
+
 <nav class="navbar navbar-expand-md navbar-dark fixed-top" id="banner">
 	<div class="container">
   <!-- Brand -->
-  <a class="navbar-brand" style="color:white;padding-left:350px;"><i class="fas fa-plane"
+ <a class="navbar-brand" style="color:white;"><i class="fas fa-plane"
 				style="font-size: 25px; color: #ffc312;"></i>XYZ FLIGHT SERVICES <i class="fas fa-plane"
 				style="font-size: 25px; color: #ffc312;"></i></a>
 
@@ -190,6 +193,18 @@ color:#FFC312;
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav ml-auto">
       
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost:9080/FRS/UserHome.jsp" ><i class="fas fa-home"></i>Home</a>
+      </li>
+	   <li class="nav-item">
+        <a class="nav-link" href="http://localhost:9080/FRS/MyBooking.jsp" ><i class="fas fa-ticket-alt"></i>My Bookings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost:9080/FRS/MyAccount.jsp"  style="color:#ffc312;"><i class="fas fa-user" style="color:#ffc312;"></i>My Account</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost:9080/FRS/Logout.jsp"   id="logout" onClick="return confirmed()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+      </li>
     
     </ul>
   </div>
@@ -213,13 +228,17 @@ color:#FFC312;
 			<div class="card-body ">
 			<form action="update" method ="post">  
 <%
-String userid = (String)request.getAttribute("userid");
- HttpSession session = request.getSession();
- session.setAttribute("userid", userid);
+//String userid = (String)request.getAttribute("userid");
+
+	
+	String userid =(String)session.getAttribute("userid"); 
+	
+	
+	//out.print(userid);
 Connection connection = null;
 PreparedStatement preparedStatement = null;
 ResultSet resultSet = null;
-String query = "select firstname,lastname,email,phonenumber from frs_tbl_users_profile where userid ='"+userid+"' ";
+String query = "select * from frs_tbl_users_profile where userid ='"+userid+"' ";
 try{
 	connection = DBUtil.getConnection();
 	preparedStatement = connection.prepareStatement(query);
@@ -263,15 +282,28 @@ try{
 					<div class="col">
 						<div class="input-field">
 							<label for="date-start">Date Of Birth:</label>
-							<input type="text" id="date-start" style="width:210px;" name ="dob" placeholder="mm/dd/yyyy" value="" required/>
+							<input type="text" id="date-start" style="width:210px;" name ="dob" placeholder="mm/dd/yyyy" value=<%=resultSet.getString("dob")%> required/>
 						</div>
 					</div>
 					<div class="col">
 						<div class="input-field">
 							<label for="gender">Gender&emsp;:</label>
-							<input type="radio" name="gender" value="male" required> Male
-							<input type="radio" name="gender" value="female" required> Female
-							<input type="radio" name="gender" value="other" required> Other 
+							<%if(resultSet.getString("gender").equals("male")){%>
+							<input type="radio" name="gender" value=<%=resultSet.getString("gender")%> checked required> Male
+							<input type="radio" name="gender" value=<%=resultSet.getString("gender")%> required> Female
+							<input type="radio" name="gender" value=<%=resultSet.getString("gender")%>  required> Other 
+						<%	}
+							else if(resultSet.getString("gender").equals("female")){%>
+							<input type="radio" name="gender" value=<%=resultSet.getString("gender")%>  required> Male
+							<input type="radio" name="gender" value=<%=resultSet.getString("gender")%>checked required> Female
+							<input type="radio" name="gender" value=<%=resultSet.getString("gender")%>  required> Other 
+						<% 	}
+							else{%>
+							<input type="radio" name="gender"  required> Male
+							<input type="radio" name="gender"  required> Female
+							<input type="radio" name="gender"  checked required> Other 
+						<% 	} %>
+							
 						</div>
 					</div>
 				</div><br>
@@ -279,7 +311,7 @@ try{
 					<div class="col">
 						<div class="input-field">
 							<label for="street">Street&emsp;&emsp;&emsp; :</label>
-							<input type="text" style="width:300px; margin-left:5px;" name="street" placeholder="street"  required/>
+							<input type="text" style="width:300px; margin-left:5px;" name="street" placeholder="street" value=<%=resultSet.getString("street")%> required/>
 						</div>
 					</div>
 					
@@ -288,13 +320,13 @@ try{
 					<div class="col">
 						<div class="input-field">
 							<label for="district">District&emsp;&emsp;&emsp;:</label>
-							<input type="text" id="district" name = "district" placeholder="district"  required/>
+							<input type="text" id="district" name = "district" placeholder="district" value=<%=resultSet.getString("district")%> required/>
 						</div>
 					</div>
 					<div class="col">
 						<div class="input-field">
 							<label for="city">City&emsp;&emsp;&emsp;:</label>
-							<input type="text" name="city" placeholder="city"  required/>
+							<input type="text" name="city" placeholder="city" value=<%=resultSet.getString("city")%> required/>
 						</div>
 					</div>
 					
@@ -303,13 +335,13 @@ try{
 					<div class="col">
 						<div class="input-field">
 							<label for="state">State&emsp;&emsp;&emsp;&emsp;:</label>
-							<input type="text" id="state" placeholder="state" name ="state"  required/>
+							<input type="text" id="state" placeholder="" value=<%=resultSet.getString("state")%> required/>
 						</div>
 					</div>
 					<div class="col">
 						<div class="input-field">
 							<label for="pincode">Pincode&emsp;:</label>
-							<input type="tel" id="pincode" pattern="[0-9]{6}" maxlength="6" style="width:210px;" name="pincode" placeholder="" value="" required/>
+							<input type="tel" id="pincode" pattern="[0-9]{6}" maxlength="6" style="width:210px;" placeholder="" value=<%=resultSet.getString("pincode")%> required/>
 						</div>
 					</div>
 					
@@ -317,7 +349,7 @@ try{
 				<div class="row">
 					<div class="col">
 						<label for="mobile_no">Mobile No&emsp; :</label>
-						<input type="tel" name="phonenumber" pattern="[0-9]{10}" maxlength="10" style="margin-left:5px;" placeholder="" value=<%=resultSet.getString("Phonenumber")%> required/>
+						<input type="tel" name="phonenumber" pattern="[0-9]{10}" maxlength="10" style="margin-left:5px;"  value=<%=resultSet.getString("Phonenumber")%> required/>
 					</div>
 				</div><br><br>
 				<div class="row">
@@ -327,16 +359,15 @@ try{
 				</div>
 				</form>	
 			</div>
-			
 		</div>
 	</div>
 <%}}catch(Exception e){
 					e.printStackTrace();
 							}%>
-							
+	
 
-			
-		
+
+
 </body>
 
 	<script src="js/jquery.min.js"></script>
@@ -365,12 +396,7 @@ function confirmed()
     return false;
 	}
 	
-</script>
-<script>
-	history.pushState(null,null,location.href);
-	window.onpopstate=function(){
-		history.go(1);
-	};
 	
 </script>
+
 </html>

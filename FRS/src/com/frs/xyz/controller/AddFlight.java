@@ -3,7 +3,6 @@ package com.frs.xyz.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,8 +60,9 @@ public class AddFlight extends HttpServlet {
 
 			// request.setAttribute("addFlight", addFlight);
 
-			RequestDispatcher rd = request.getRequestDispatcher("Flights.jsp");
-			rd.include(request, response);
+//			RequestDispatcher rd = request.getRequestDispatcher("Flights.jsp");
+//			rd.include(request, response);
+			response.sendRedirect("Flights.jsp");
 		}
 	}
 }

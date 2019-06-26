@@ -1,21 +1,19 @@
-<%@page import="com.frs.xyz.controller.AddFlight"%>
-<%@page import="com.frs.xyz.service.Flight_Details"%>
+<%@ page language="java" import="com.frs.xyz.bean.*,java.util.*,com.frs.xyz.dao.*,com.frs.xyz.util.*" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@page import="com.frs.xyz.service.Flight_Details"%>
 <%@page language="java"%>
 <%@page import="java.sql.*"%>
-<%@page import="com.frs.xyz.util.DBUtil" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    <jsp:include page="AdminPage.jsp"/>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
- <jsp:include page="AdminPage.jsp"/>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>route</title>
+	<title>schedule</title>
    
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     
@@ -32,11 +30,11 @@ height: 20%;
 align-content: center;
 }
 .card{
-height: 470px;
+height: 570px;
 margin-left:150px;
 margin-right:1px; 
 margin-top: 130px;
-width: 900px;
+width: 1200px;
 background-color: rgba(0,0,0,0.5) !important;
 overflow-y:auto;
 }
@@ -49,8 +47,6 @@ padding:20px 10px 0px 30px;
 color: white;
 text-align: center;
 }
-
-
 .table{
 	background-color: rgba(0,0,0,0.5) !important;
 	color:white !important;
@@ -83,21 +79,19 @@ color:white;
 	padding-left:400px;
 	padding-top: 610px;
 }
-
 .highlight{
 	background-color:#ffc312;
 	color:black !important;
 }
 </style>
 <body>
-
-	<div class="sidenav tab mt-5 pt-5">
+<div class="sidenav tab mt-5 pt-5">
 	<a href="http://localhost:9080/FRS/Flights.jsp" class="pt-4 "><i
 		class="fas fa-plane-departure"> FLIGHTS</i></a>
-	<a href="http://localhost:9080/FRS/Route.jsp" class="pt-4 highlight"><i
+	<a href="http://localhost:9080/FRS/Route.jsp" class="pt-4"><i
 		class="fas fa-map-marked-alt"> ROUTE</i></a>
-	<a href="http://localhost:9080/FRS/Schedule.jsp" class="pt-4"><i class="fas fa-clock"> SCHEDULE</i></a>
-	<a href="http://localhost:9080/FRS/Passenger_Details.jsp" class="pt-4"><i class="fas fa-users"> PASSENGER
+	<a href="http://localhost:9080/FRS/Schedule.jsp" class="pt-4 "><i class="fas fa-clock"> SCHEDULE</i></a>
+	<a href="http://localhost:9080/FRS/Passenger_Details.jsp" class="pt-4 highlight"><i class="fas fa-users"> PASSENGER
 			DETAILS</i></a>
 	</div>
 <div class="container">
@@ -106,61 +100,61 @@ color:white;
 		
 			<div class="card-header">
 				
-				<h3>Route Details</h3>
+				<h3>Passenger Details</h3>
 				
 			</div>
 			<div class="card-body">
-				<form name="login" action="Edit_Route.jsp">
+				<form name="login" action="register.jsp">
 					<table class="table table-hover">
 					    <thead>
 					      <tr bgcolor=#003973>
-					       <th align="center"><font color="white">Flight ID</font></th>
-					        <th align="center"><font color="white">Route ID</font></th>
-					        <th align="center"><font color="white">Source</font></th>
-					         <th align="center"><font color="white">Destination</font></th>
-					         <th align="center"><font color="white">Distance</font></th>
-					        <th align="center"><font color="white">Fare</font></th>
-					        <th></th>
-					        <th></th>
-					      </tr>
+					      	 <th align="center"><font color="white">UserID</font></th>
+					         <th align="center"><font color="white">FlightID</font></th>
+					         <th align="center"><font color="white">Name</font></th>
+					         <th align="center"><font color="white">SeatNo</font></th>
+					       <th align="center"><font color="white">From</font></th>
+					        
+					         <th align="center"><font color="white">To</font></th>
+					        
+					         <th align="center"><font color="white">Date</font></th>
+			              </tr>
 					    </thead>
 					    <tbody>
-					    
-			<%
+					    <%
 Connection connection = null;
 PreparedStatement preparedStatement = null;
 ResultSet resultSet = null;
-String query = "select * from frs_tbl_route";
+String query = "select * from frs_tbl_booking_details";
 try{
 	connection = DBUtil.getConnection();
 	preparedStatement = connection.prepareStatement(query);
-	resultSet = preparedStatement.executeQuery(query);		    
-	while(resultSet.next()){
-		out.println(" <tr><td>"+resultSet.getString("flightid")+"</td><td>"+resultSet.getString("routeid")+"</td><td>"+
-	resultSet.getString("source")+"</td><td>"+resultSet.getString("Destination")+
-	//resultSet.getString("Departuretime")+"</td><td>"+
-	//resultSet.getString("flight_From")+"</td><td>"+
-	//resultSet.getString("flight_To")+"</td><td>"+
-	//resultSet.getString("Arrivaltime")+
-	"</td><td>"+resultSet.getInt("Distance")+"</td><td>"+
-	resultSet.getInt("fare")+"</td><td><form action=Edit_Route.jsp><button class=btn btn-primary type=submit name=routeid value="+resultSet.getString("routeid")+">Edit</button></form></td></td><td><form action = deleteroute method = post ><button type=submit class=btn btn-danger style='background:red;' name=routeid value="+resultSet.getString("routeid")+" onClick='return deleted()'>Delete</button></form></td></tr></tr>"
-	);
-	
-	}
-}
-catch(Exception e){
-	e.printStackTrace();
-}
-finally{
-	DBUtil.close(connection, preparedStatement, resultSet);
-}
+	resultSet = preparedStatement.executeQuery(query);
+	while(resultSet.next()){%>
+					
+					      <tr>
+					      	<td><%=resultSet.getString("userid") %></td>
+					        <td><%=resultSet.getString("flightid") %></td>
+					      <td><%=resultSet.getString("name") %></td>
+					        <td><%=resultSet.getString("seats") %></td>
+					       <td><%=resultSet.getString("flight_from") %></td>
+					       <td><%=resultSet.getString("flight_to") %></td>
+					       <td><%=resultSet.getString("dateofjourney") %></td>
+					     </tr>
+					     <%
+					}
+						}
 
-%>
-		
-					    </tbody>
+						catch (Exception e) {
+							e.printStackTrace();
+						}
+					
+				%>
+			           </tbody>
 					</table>
 				</form>
 			</div>
+			
+			
 			
 		</div>
 	</div>
@@ -183,14 +177,5 @@ $(document).on("scroll", function(){
 		$("#banner").removeClass("shrink");
 	}
 });
-
-function deleted(){
-	if(confirm('Are you sure want to Delete?')) {
-        return true;
-       
-    }
-
-    return false;
-	}
 </script>
 </html>
